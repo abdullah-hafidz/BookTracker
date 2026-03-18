@@ -1,0 +1,10 @@
+# AWS SDK — downloaded at deploy time (see deployment-guide.md Step 8.x)
+lib/aws.phar
+
+# Local uploads — synced to S3 in production
+uploads/*
+!uploads/.gitkeep
+
+# Environment / secrets
+.env
+config/local.php

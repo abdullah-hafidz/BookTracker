@@ -1,0 +1,11 @@
+Options -Indexes
+RewriteEngine On
+
+# LOCAL DEV (Laragon): set to /cc2/
+# PRODUCTION (EC2):    set to /
+RewriteBase /
+
+# Serve real files (CSS, JS, images, uploads) directly
+RewriteCond %{REQUEST_FILENAME} !-f
+# Route everything else (including directory requests) to front controller
+RewriteRule ^(.*)$ public/index.php [QSA,L]
