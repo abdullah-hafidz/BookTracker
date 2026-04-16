@@ -12,14 +12,5 @@ CREATE TABLE IF NOT EXISTS books (
     cover_url   VARCHAR(500)                    DEFAULT NULL,
     status      ENUM('unread','read')           NOT NULL DEFAULT 'unread',
     notes       TEXT                            DEFAULT NULL,
-    created_at  TIMESTAMP                       DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP                       DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    created_at  TIMESTAMP                       DEFAULT CURRENT_TIMESTAMP
 );
-
-CREATE TABLE IF NOT EXISTS settings (
-    `key`   VARCHAR(50)  NOT NULL,
-    `value` VARCHAR(255) NOT NULL,
-    PRIMARY KEY (`key`)
-);
-
-INSERT IGNORE INTO settings (`key`, `value`) VALUES ('theme', 'dark');

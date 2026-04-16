@@ -10,8 +10,7 @@
  * Front Controller — single entry point for all application requests.
  *
  * Apache mod_rewrite (via .htaccess) routes all non-file requests here.
- * Reads ?action= from the query string and dispatches to BookController,
- * with the exception of 'save-theme' which is handled inline and returns JSON.
+ * Reads ?action= from the query string and dispatches to BookController.
  *
  * Dispatch table:
  *   index   → BookController::index()
@@ -35,21 +34,10 @@ if (empty($_SESSION['csrf_token'])) {
 
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../app/models/Book.php';
-require_once __DIR__ . '/../app/models/Setting.php';
 require_once __DIR__ . '/../app/controllers/BookController.php';
 
 $action     = $_GET['action'] ?? 'index';
 $controller = new BookController($pdo);
-
-// Save-theme is a lightweight JSON endpoint — handle before controller dispatch
-if ($action === 'save-theme') {
-    $theme   = ($_POST['theme'] ?? '') === 'light' ? 'light' : 'dark';
-    $setting = new Setting($pdo);
-    $setting->set('theme', $theme);
-    header('Content-Type: application/json');
-    echo json_encode(['ok' => true, 'theme' => $theme]);
-    exit;
-}
 
 match ($action) {
     'add'    => $controller->add(),

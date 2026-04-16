@@ -8,8 +8,6 @@
  * @package Group1\BookTracker\Controllers
  */
 
-require_once __DIR__ . '/../models/Setting.php';
-
 // AWS SDK for PHP — downloaded to lib/aws.phar at deploy time.
 // Absent in local dev (no CDN_URL) so the conditional require is safe.
 if (file_exists(__DIR__ . '/../../lib/aws.phar')) {
@@ -21,7 +19,6 @@ if (file_exists(__DIR__ . '/../../lib/aws.phar')) {
  *
  * Handles all HTTP actions for the book tracking application:
  * listing, adding, editing, viewing, deleting, and toggling books.
- * Also resolves the user's theme preference before rendering every view.
  */
 class BookController
 {
@@ -37,27 +34,20 @@ class BookController
     }
 
     // -------------------------------------------------------------------------
-    // Index — book listing with optional status filter
+    // Index — book listing
     // -------------------------------------------------------------------------
 
     /**
-     * Display the library index page with optional status filter.
-     *
-     * Reads ?filter=all|read|unread from the query string.
-     * Passes books array, stats summary, and active filter to the view.
+     * Display the library index page.
      *
      * @return void
      */
     public function index(): void
     {
-        $filter = $_GET['filter'] ?? 'all';
-        $status = in_array($filter, ['read', 'unread'], true) ? $filter : null;
-
-        $books = $this->model->getAll($status);
-        $stats = $this->model->getStats();
+        $books = $this->model->getAll();
 
         $this->pushMetric('PageView');
-        $this->render('index', compact('books', 'stats', 'filter'));
+        $this->render('index', compact('books'));
     }
 
     // -------------------------------------------------------------------------
@@ -263,8 +253,6 @@ class BookController
     /**
      * Render a view wrapped in the site layout (header + footer).
      *
-     * Resolves the current theme from the database and injects it into $data
-     * so header.php can set data-theme on <html> server-side (no flash).
      * All $data keys are extracted as local variables available in the view.
      *
      * @param  string               $view  View filename (without .php) inside views/books/.
@@ -273,10 +261,6 @@ class BookController
      */
     private function render(string $view, array $data = []): void
     {
-        // Resolve theme server-side so header.php can set data-theme on <html>
-        $setting = new Setting($this->model->getPdo());
-        $data['theme'] = $setting->get('theme', 'dark');
-
         // Inject CSRF token so views can embed it in form hidden inputs
         $data['csrfToken'] = $_SESSION['csrf_token'] ?? '';
 

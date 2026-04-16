@@ -22,30 +22,13 @@ class Book
     public function __construct(private PDO $pdo) {}
 
     /**
-     * Returns the underlying PDO connection.
+     * Fetch all books ordered by most recently added.
      *
-     * Used by the controller to pass the connection to other models (e.g. Setting).
-     *
-     * @return PDO
-     */
-    public function getPdo(): PDO { return $this->pdo; }
-
-    /**
-     * Fetch all books, optionally filtered by read/unread status.
-     *
-     * @param  string|null $status  'read', 'unread', or null for all books.
      * @return array<int, array<string, mixed>>  Array of book rows (associative).
      */
-    public function getAll(?string $status = null): array
+    public function getAll(): array
     {
-        if ($status !== null && in_array($status, ['read', 'unread'], true)) {
-            $stmt = $this->pdo->prepare(
-                'SELECT * FROM books WHERE status = ? ORDER BY created_at DESC'
-            );
-            $stmt->execute([$status]);
-        } else {
-            $stmt = $this->pdo->query('SELECT * FROM books ORDER BY created_at DESC');
-        }
+        $stmt = $this->pdo->query('SELECT * FROM books ORDER BY created_at DESC');
         return $stmt->fetchAll();
     }
 
@@ -144,25 +127,4 @@ class Book
         $stmt->execute([$id]);
     }
 
-    /**
-     * Return summary statistics for the whole library.
-     *
-     * @return array{total: int, read: int, unread: int}
-     */
-    public function getStats(): array
-    {
-        $row = $this->pdo->query(
-            "SELECT
-                COUNT(*) AS total,
-                SUM(status = 'read')   AS `read`,
-                SUM(status = 'unread') AS unread
-             FROM books"
-        )->fetch();
-
-        return [
-            'total'  => (int) $row['total'],
-            'read'   => (int) $row['read'],
-            'unread' => (int) $row['unread'],
-        ];
-    }
 }

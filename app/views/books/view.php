@@ -13,7 +13,7 @@
  *
  * @var array<string, mixed> $book  The book record from the database.
  *                                  Keys: id, title, author, genre, cover_url,
- *                                        status, notes, created_at, updated_at.
+ *                                        status, notes, created_at.
  */
 $pageTitle = $book['title']; ?>
 
@@ -57,12 +57,6 @@ $pageTitle = $book['title']; ?>
                 <div class="meta-label">Added</div>
                 <div class="meta-value"><?= date('d M Y', strtotime($book['created_at'])) ?></div>
             </div>
-            <?php if ($book['updated_at'] !== $book['created_at']): ?>
-            <div class="meta-item">
-                <div class="meta-label">Last updated</div>
-                <div class="meta-value"><?= date('d M Y', strtotime($book['updated_at'])) ?></div>
-            </div>
-            <?php endif; ?>
         </div>
 
         <?php if ($book['notes']): ?>

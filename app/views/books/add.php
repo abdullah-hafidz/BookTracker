@@ -83,13 +83,6 @@ $pageTitle = 'Add a Book'; ?>
         <div class="form-section">
             <p class="form-section-title">Cover Image</p>
             <div class="form-group">
-                <div id="previewWrap" style="display:none" class="cover-preview-wrap">
-                    <img id="previewImg" src="" alt="Cover preview">
-                    <div class="cover-preview-info">
-                        <strong id="previewName"></strong>
-                        <span>Click below to change</span>
-                    </div>
-                </div>
                 <label class="upload-zone">
                     <input type="file" id="cover" name="cover" accept="image/*">
                     <span class="upload-icon">🖼️</span>

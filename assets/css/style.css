@@ -43,39 +43,6 @@
 }
 
 /* ============================================================
-   Light Theme — "Arctic"
-   ============================================================ */
-[data-theme="light"] {
-    --bg:         #f0f5ff;
-    --bg2:        #e8f0ff;
-    --surface:    #ffffff;
-    --surface2:   #f5f8ff;
-    --border:     #ccd9f0;
-    --border2:    #b0c4e8;
-
-    --gold:       #2563eb;
-    --gold-dim:   #1d4ed8;
-    --gold-glow:  rgba(37,99,235,.12);
-    --gold-text:  #1a50c8;
-
-    --text:       #0a1228;
-    --text-muted: #3a5888;
-    --text-dim:   #7090c0;
-
-    --green:      #0369a1;
-    --green-bg:   rgba(3,105,161,.1);
-    --amber:      #7c3aed;
-    --amber-bg:   rgba(124,58,237,.1);
-    --red:        #b83228;
-    --red-bg:     rgba(184,50,40,.08);
-    --red-hover:  #9a2820;
-
-    --shadow:     0 2px 8px rgba(10,18,40,.08);
-    --shadow-lg:  0 8px 32px rgba(10,18,40,.14);
-    --glow:       0 0 20px var(--gold-glow);
-}
-
-/* ============================================================
    Base
    ============================================================ */
 html { scroll-behavior: smooth; }
@@ -91,15 +58,6 @@ body {
     background-image:
         radial-gradient(ellipse at 20% 0%, rgba(77,143,255,.06) 0%, transparent 55%),
         radial-gradient(ellipse at 80% 100%, rgba(167,139,250,.04) 0%, transparent 55%);
-    transition: background-color .3s, color .3s;
-}
-
-/* Light theme adjusts background gradients */
-[data-theme="light"] body,
-[data-theme="light"].body-wrap {
-    background-image:
-        radial-gradient(ellipse at 20% 0%, rgba(37,99,235,.05) 0%, transparent 55%),
-        radial-gradient(ellipse at 80% 100%, rgba(124,58,237,.03) 0%, transparent 55%);
 }
 
 a { color: var(--gold-text); text-decoration: none; }
@@ -119,10 +77,6 @@ a:hover { color: var(--gold); }
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
-    transition: background .3s, border-color .3s;
-}
-[data-theme="light"] .site-header {
-    background: rgba(250,248,245,.92);
 }
 .site-header .container {
     display: flex; align-items: center; justify-content: space-between;
@@ -225,81 +179,6 @@ main { flex: 1; padding: 2.5rem 0 4rem; }
 .btn-ghost:hover { border-color: var(--border2); color: var(--text); background: var(--surface); }
 
 .btn-sm { padding: .35rem .8rem; font-size: .78rem; }
-
-/* ============================================================
-   Stats Bar
-   ============================================================ */
-.stats-section { margin-bottom: 2rem; }
-
-.stats-bar {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr) 2fr;
-    gap: 1rem; margin-bottom: 1rem;
-}
-.stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.1rem 1.4rem;
-    display: flex; flex-direction: column;
-}
-.stat-card.total  { border-left: 3px solid var(--gold); }
-.stat-card.read   { border-left: 3px solid var(--green); }
-.stat-card.unread { border-left: 3px solid var(--amber); }
-
-.stat-number {
-    font-family: var(--font-display);
-    font-size: 2rem; font-weight: 700; line-height: 1;
-    color: var(--text);
-}
-.stat-label {
-    font-size: .75rem; color: var(--text-muted);
-    margin-top: .3rem; text-transform: uppercase; letter-spacing: .08em;
-}
-
-/* Progress card */
-.stat-card.progress { justify-content: center; gap: .6rem; }
-.progress-label {
-    display: flex; justify-content: space-between; align-items: center;
-}
-.progress-title {
-    font-size: .8rem; text-transform: uppercase;
-    letter-spacing: .08em; color: var(--text-muted);
-}
-.progress-pct {
-    font-family: var(--font-display);
-    font-size: 1.1rem; font-weight: 600; color: var(--gold-text);
-}
-.progress-track {
-    height: 6px; background: var(--border);
-    border-radius: 999px; overflow: hidden;
-}
-.progress-fill {
-    height: 100%; background: linear-gradient(90deg, var(--gold-dim), var(--gold));
-    border-radius: 999px;
-    transition: width .6s ease;
-}
-.progress-sub {
-    font-size: .75rem; color: var(--text-dim);
-}
-
-/* ============================================================
-   Filter Tabs
-   ============================================================ */
-.filter-tabs {
-    display: flex; gap: .5rem; margin-bottom: 1.75rem;
-    border-bottom: 1px solid var(--border); padding-bottom: 0;
-}
-.tab {
-    padding: .6rem 1.25rem .7rem;
-    font-size: .85rem; font-weight: 700; letter-spacing: .03em;
-    color: var(--text-muted); background: transparent; border: none;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    cursor: pointer; transition: all .2s; text-decoration: none;
-}
-.tab:hover { color: var(--text); text-decoration: none; }
-.tab.active { color: var(--gold-text); border-bottom-color: var(--gold); }
 
 /* ============================================================
    Book Grid
@@ -514,7 +393,7 @@ main { flex: 1; padding: 2.5rem 0 4rem; }
 .upload-text { font-size: .85rem; color: var(--text-muted); }
 .upload-hint { font-size: .75rem; color: var(--text-dim); margin-top: .25rem; }
 
-/* Image preview */
+/* Image preview (edit page — static current cover) */
 .cover-preview-wrap {
     display: flex; align-items: center; gap: 1rem;
     padding: .75rem; background: var(--bg2);
@@ -629,46 +508,9 @@ main { flex: 1; padding: 2.5rem 0 4rem; }
 }
 
 /* ============================================================
-   Theme Toggle Button
-   ============================================================ */
-.theme-toggle {
-    display: flex; align-items: center; justify-content: center;
-    width: 36px; height: 36px;
-    background: transparent; border: 1px solid var(--border);
-    border-radius: 50%; cursor: pointer;
-    color: var(--text-muted);
-    transition: color .2s, border-color .2s, background .2s;
-    flex-shrink: 0;
-}
-.theme-toggle:hover {
-    color: var(--gold-text); border-color: var(--gold-dim);
-    background: var(--gold-glow);
-}
-.theme-toggle svg { width: 16px; height: 16px; display: block; }
-
-/* In dark mode: show sun (to switch to light), hide moon */
-[data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
-[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
-
-/* In light mode: show moon (to switch to dark), hide sun */
-[data-theme="light"] .theme-toggle .icon-sun  { display: none; }
-[data-theme="light"] .theme-toggle .icon-moon { display: block; }
-
-/* ============================================================
-   Smooth transitions for theme switching
-   ============================================================ */
-.stat-card, .book-card, .form-card, .book-notes-section,
-.meta-item, .upload-zone, .site-footer, .detail-table th,
-.detail-table td, .cover-preview-wrap, .status-option label {
-    transition: background-color .3s, border-color .3s, color .2s;
-}
-
-/* ============================================================
    Responsive
    ============================================================ */
 @media (max-width: 768px) {
-    .stats-bar { grid-template-columns: repeat(3, 1fr); }
-    .stat-card.progress { grid-column: 1 / -1; }
     .book-detail-wrap { grid-template-columns: 1fr; gap: 1.5rem; }
     .book-detail-cover { position: static; }
     .book-detail-cover img { max-width: 180px; }
@@ -677,6 +519,5 @@ main { flex: 1; padding: 2.5rem 0 4rem; }
     .page-header h1 { font-size: 1.5rem; }
 }
 @media (max-width: 480px) {
-    .stats-bar { grid-template-columns: 1fr 1fr; }
     .book-grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); }
 }

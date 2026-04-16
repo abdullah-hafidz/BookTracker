@@ -84,19 +84,11 @@ $pageTitle = 'Edit: ' . $book['title']; ?>
             <div class="form-group">
                 <?php if ($book['cover_url']): ?>
                     <?php $coverSrc = (CDN_URL !== '' ? CDN_URL : APP_URL) . '/' . $book['cover_url']; ?>
-                    <div id="previewWrap" class="cover-preview-wrap">
-                        <img id="previewImg" src="<?= htmlspecialchars($coverSrc) ?>" alt="Current cover">
+                    <div class="cover-preview-wrap">
+                        <img src="<?= htmlspecialchars($coverSrc) ?>" alt="Current cover">
                         <div class="cover-preview-info">
                             <strong>Current cover</strong>
                             <span>Upload a new file to replace it</span>
-                        </div>
-                    </div>
-                <?php else: ?>
-                    <div id="previewWrap" style="display:none" class="cover-preview-wrap">
-                        <img id="previewImg" src="" alt="Cover preview">
-                        <div class="cover-preview-info">
-                            <strong id="previewName"></strong>
-                            <span>Click below to change</span>
                         </div>
                     </div>
                 <?php endif; ?>
