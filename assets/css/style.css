@@ -185,7 +185,7 @@ main { flex: 1; padding: 2.5rem 0 4rem; }
    ============================================================ */
 .book-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 1.5rem;
 }
 
@@ -511,6 +511,7 @@ main { flex: 1; padding: 2.5rem 0 4rem; }
    Responsive
    ============================================================ */
 @media (max-width: 768px) {
+    .book-grid { grid-template-columns: repeat(3, 1fr); }
     .book-detail-wrap { grid-template-columns: 1fr; gap: 1.5rem; }
     .book-detail-cover { position: static; }
     .book-detail-cover img { max-width: 180px; }
@@ -519,5 +520,5 @@ main { flex: 1; padding: 2.5rem 0 4rem; }
     .page-header h1 { font-size: 1.5rem; }
 }
 @media (max-width: 480px) {
-    .book-grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); }
+    .book-grid { grid-template-columns: repeat(2, 1fr); }
 }
