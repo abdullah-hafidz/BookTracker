@@ -129,8 +129,7 @@ main { flex: 1; padding: 2.5rem 0 4rem; }
    ============================================================ */
 .page-header {
     display: flex; align-items: flex-end; justify-content: space-between;
-    margin-bottom: 2rem; padding-bottom: 1.25rem;
-    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
 }
 .page-header h1 {
     font-family: var(--font-display);
@@ -274,8 +273,8 @@ main { flex: 1; padding: 2.5rem 0 4rem; }
 .book-author { font-size: .8rem; color: var(--text-muted); }
 .book-genre  {
     display: inline-block; margin-top: .5rem;
-    font-size: .68rem; color: var(--text-dim);
-    background: var(--surface2); border: 1px solid var(--border);
+    font-size: .68rem; color: var(--text-muted);
+    background: var(--surface2); border: 1px solid var(--border2);
     padding: .15rem .5rem; border-radius: 999px;
     letter-spacing: .04em;
 }

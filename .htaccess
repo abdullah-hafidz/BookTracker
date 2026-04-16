@@ -5,6 +5,9 @@ RewriteEngine On
 # PRODUCTION (EC2):    set to /
 RewriteBase /
 
+# Route health check directly to public/health.php (bypasses front controller)
+RewriteRule ^health\.php$ public/health.php [QSA,L]
+
 # Serve real files (CSS, JS, images, uploads) directly
 RewriteCond %{REQUEST_FILENAME} !-f
 # Route everything else (including directory requests) to front controller
