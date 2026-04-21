@@ -17,7 +17,7 @@
  * any code changes.
  *
  * Constants defined:
- * @define string APP_URL  Base URL of the application (e.g. '/booktracker' or 'https://example.com').
+ * @define string APP_URL  Base URL of the application (e.g. '/cc2' or 'https://example.com').
  * @define string CDN_URL  CloudFront CDN base URL, or empty string in local dev.
  */
 
@@ -26,7 +26,7 @@
 // AWS EC2: set via /etc/environment before deploying.
 
 define('APP_URL',  getenv('APP_URL') !== false ? getenv('APP_URL') : (
-    (($_SERVER['HTTP_HOST'] ?? '') === 'localhost') ? '/booktracker' : ''
+    (($_SERVER['HTTP_HOST'] ?? '') === 'localhost') ? '/cc2' : ''
 ));
 define('CDN_URL',  getenv('CDN_URL')  ?: '');   // e.g. https://xxxxx.cloudfront.net
 
