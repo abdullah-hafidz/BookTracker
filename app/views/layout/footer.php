@@ -17,6 +17,6 @@
         <p>Group1 &middot; CMP6210 Cloud Computing &middot; Birmingham City University</p>
     </div>
 </footer>
-<script src="<?= APP_URL ?>/assets/js/app.js"></script>
+<script src="<?= CDN_URL ?: APP_URL ?>/assets/js/app.js"></script>
 </body>
 </html>
