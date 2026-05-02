@@ -46,7 +46,6 @@ class BookController
     {
         $books = $this->model->getAll();
 
-        $this->pushMetric('PageView');
         $this->render('index', compact('books'));
     }
 
@@ -75,8 +74,7 @@ class BookController
 
             if (empty($errors)) {
                 $input['cover_url'] = $this->handleUpload();
-                $this->model->create($input);
-                $this->pushMetric('BooksAdded');
+                $this->runWrite(fn() => $this->model->create($input));
                 $this->redirect('/?action=index');
             }
         }
@@ -108,7 +106,7 @@ class BookController
         // Handle quick toggle from listing page
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_status'])) {
             $this->validateCsrf();
-            $this->model->toggleStatus($id);
+            $this->runWrite(fn() => $this->model->toggleStatus($id));
             $this->redirect('/?action=index');
         }
 
@@ -124,7 +122,7 @@ class BookController
                 // Keep existing cover if no new file uploaded
                 $newCover = $this->handleUpload();
                 $input['cover_url'] = $newCover ?: $book['cover_url'];
-                $this->model->update($id, $input);
+                $this->runWrite(fn() => $this->model->update($id, $input));
                 $this->redirect('/?action=view&id=' . $id);
             }
         }
@@ -175,8 +173,7 @@ class BookController
         $this->validateCsrf();
         $id = (int) ($_POST['id'] ?? 0);
         if ($id > 0) {
-            $this->model->delete($id);
-            $this->pushMetric('BooksDeleted');
+            $this->runWrite(fn() => $this->model->delete($id));
         }
 
         $this->redirect('/?action=index');
@@ -203,8 +200,7 @@ class BookController
         $this->validateCsrf();
         $id = (int) ($_POST['id'] ?? 0);
         if ($id > 0) {
-            $this->model->toggleStatus($id);
-            $this->pushMetric('StatusToggled');
+            $this->runWrite(fn() => $this->model->toggleStatus($id));
         }
 
         $this->redirect('/?action=index');
@@ -221,7 +217,7 @@ class BookController
      * Silent no-op in local dev (CDN_URL is empty or the SDK phar is not present).
      * Errors are logged but never surface to the user.
      *
-     * @param  string $name   Metric name (e.g. 'BooksAdded').
+     * @param  string $name   Metric name ('S3UploadFailures' or 'DBWriteErrors').
      * @param  float  $value  Metric value (default 1.0).
      * @return void
      */
@@ -247,6 +243,28 @@ class BookController
             ]);
         } catch (Aws\Exception\AwsException $e) {
             error_log('CloudWatch metric failed: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Execute a database write and push a DBWriteErrors metric (0 = success, 1 = failure).
+     *
+     * Emitting on every operation ensures data points are always present in CloudWatch
+     * regardless of error frequency. PDOExceptions are re-thrown after the metric is pushed
+     * so the caller's error handling is unchanged.
+     *
+     * @param  callable $fn  The write operation to execute.
+     * @return void
+     */
+    private function runWrite(callable $fn): void
+    {
+        try {
+            $fn();
+            $this->pushMetric('DBWriteErrors', 0.0);
+        } catch (\PDOException $e) {
+            error_log('DB write error: ' . $e->getMessage());
+            $this->pushMetric('DBWriteErrors', 1.0);
+            throw $e;
         }
     }
 
@@ -391,8 +409,10 @@ class BookController
                         'Key'        => 'uploads/' . $filename,
                         'SourceFile' => $dest,
                     ]);
+                    $this->pushMetric('S3UploadFailures', 0.0);
                 } catch (Aws\Exception\AwsException $e) {
                     error_log('S3 upload failed: ' . $e->getMessage());
+                    $this->pushMetric('S3UploadFailures', 1.0);
                 }
             }
 
